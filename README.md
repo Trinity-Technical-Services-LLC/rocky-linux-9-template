@@ -1,0 +1,1 @@
+# rocky-linux-9-template
