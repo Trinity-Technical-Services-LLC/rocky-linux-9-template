@@ -1,0 +1,51 @@
+name: "Packer Test Workflow"
+
+on: 
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  id-token: write
+  pull-requests: read
+
+concurrency:
+  group: tf-${{ github.event.repository.name }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  packer:
+    runs-on: [self-hosted, Linux, X64]
+    env:
+      # Proxmox Variables
+      PKR_VAR_proxmox_hostname:         ${{ secrets.PROXMOX_HOSTNAME }}
+      PKR_VAR_proxmox_api_token_id:     ${{ secrets.PROXMOX_TOKEN_ID }}
+      PKR_VAR_proxmox_api_token_secret: ${{ secrets.PROXMOX_TOKEN_SECRET }}
+      PKR_VAR_proxmox_skip_tls_verify:  ${{ secrets.PROXMOX_SKIP_TLS_VERIFY }}
+      PKR_VAR_proxmox_node:             ${{ secrets.PROXMOX_NODE }}
+
+      # Deploy User Variables
+      PKR_VAR_deploy_user_name:     ${{ secrets.DEPLOY_USER_NAME }}
+      PKR_VAR_deploy_user_password: ${{ secrets.DEPLOY_USER_PASSWORD }}
+      PKR_VAR_deploy_user_key:      ${{ secrets.DEPLOY_USER_KEY }}
+  
+    steps:
+      - name: Checkout GitHub Repository
+        uses: actions/checkout@v4
+
+      - name: Packer init (install required_plugins)
+        run: /usr/bin/packer init -upgrade .
+
+      - name: Packer validate
+        run: |
+          packer fmt -check -diff .
+          # add -var-file if you keep a vars file, e.g. vars/default.pkrvars.hcl
+          # packer validate -var-file=vars/default.pkrvars.hcl .
+          /usr/bin/packer validate .
+
+      - name: Packer build
+        run: |
+          # include -var-file if you use one
+          # packer build -timestamp-ui -color=false -var-file=vars/default.pkrvars.hcl .
+          /usr/bin/packer build -timestamp-ui -color=false .
