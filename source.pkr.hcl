@@ -13,7 +13,7 @@ source "proxmox-iso" "linux-rocky" {
   insecure_skip_tls_verify = "${var.INSECURE_SKIP_TLS_VERIFY}"
 
   // Proxmox Settings
-  node                     = "${var.proxmox_node}"
+  node                     = "${secrets.PROXMOX_HOSTNAME}"
 
   // Virtual Machine Settings
   vm_name         = "${local.vm_name}"
