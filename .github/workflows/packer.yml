@@ -22,7 +22,7 @@ jobs:
       PKR_VAR_proxmox_hostname:         ${{ secrets.PROXMOX_HOSTNAME }}
       PKR_VAR_proxmox_api_token_id:     ${{ secrets.PROXMOX_TOKEN_ID }}
       PKR_VAR_proxmox_api_token_secret: ${{ secrets.PROXMOX_TOKEN_SECRET }}
-      PKR_VAR_proxmox_skip_tls_verify:  ${{ secrets.PROXMOX_SKIP_TLS_VERIFY }}
+      PKR_VAR_proxmox_skip_tls_verify:  ${{ vars.PROXMOX_SKIP_TLS_VERIFY || false }}
       PKR_VAR_proxmox_node:             ${{ secrets.PROXMOX_NODE }}
 
       # Deploy User Variables
