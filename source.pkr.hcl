@@ -7,10 +7,10 @@
 source "proxmox-iso" "linux-rocky" {
 
   // Proxmox Connection Settings and Credentials
-  proxmox_url              = "https://${var.proxmox_hostname}:8006/api2/json"
-  username                 = "${var.proxmox_api_token_id}"
-  token                    = "${var.proxmox_api_token_secret}"
-  insecure_skip_tls_verify = "${var.proxmox_skip_tls_verify}"
+  proxmox_url              = "https://${secrets.PROXMOX_HOSTNAME}:8006/api2/json"
+  username                 = "${var.PROXMOX_TOKEN_ID}"
+  token                    = "${var.PROXMOX_TOKEN_SECRET}"
+  insecure_skip_tls_verify = "${var.INSECURE_SKIP_TLS_VERIFY}"
 
   // Proxmox Settings
   node                     = "${var.proxmox_node}"
