@@ -22,7 +22,7 @@ locals {
     "<down><down><end><wait>",
     // This types the string "text" followed by the value of the 'data_source_command' local variable.
     // This is used to modify the boot menu option's configuration to boot in text mode and specify the kickstart data source configured in the common variables.
-    "text ${local.data_source_command}",
+    " text ${local.data_source_command}",
     // This sends the "enter" key, waits, turns on the left control key, sends the "x" key, and then turns off the left control key. This is used to save the changes and exit the boot menu option's configuration, and then continue the boot process.
     "<enter><wait><leftCtrlOn>x<leftCtrlOff>"
   ]
